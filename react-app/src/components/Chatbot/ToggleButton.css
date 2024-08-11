@@ -1,0 +1,52 @@
+/* ToggleButton.css */
+.toggle-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #41de35; /* Button background color */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Smooth transition for transform */
+}
+
+.toggle-button:hover {
+  transform: scale(1.1); /* Slightly increase size on hover */
+}
+
+.toggle-icon {
+  font-size: 50px; /* Increase font size of the + symbol */
+  line-height: 0; /* Reset line height to avoid vertical misalignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center; /* Center rotation around the symbol */
+  transition: transform 0.3s ease; /* Smooth transition for rotation */
+  transform: translateY(-5px);
+}
+
+.toggle-button.open{
+  transform: rotate(-90deg) ;
+}
+
+.toggle-button.open .toggle-icon {
+  transform: rotate(-45deg) translateY(-5px) ; /* Rotate the + symbol to become X */
+  transform-origin: center; /* Center rotation around the symbol */
+  background-color: #41de35; /* Change background color when open */
+  color: white;
+}
+
+.toggle-image {
+  width: 60px; /* Adjust size of the image as needed */
+  height: 60px;
+  transition: opacity 0.3s ease; /* Smooth transition for image visibility */
+}
+
+/* Ensure the image is hidden when the button is open */
+.toggle-button.open .toggle-image {
+  opacity: 0;
+}

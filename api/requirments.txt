@@ -1,0 +1,16 @@
+flask
+python-dotenv
+pandas
+bs4
+logging
+pymongo
+flask_cors
+requests
+langchain
+langchain-astradb
+langchain-community
+langchain_core
+google-generativeai
+langchain-google-genai
+
+-e .

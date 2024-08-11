@@ -1,0 +1,56 @@
+.App {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.App-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.App-nav li {
+  margin-right: 50px;
+}
+
+.App-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.App-nav a:hover {
+  text-decoration: underline;
+}
+
+.App-menu {
+  margin-right: auto;
+}
+
+.App-menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.App-menu a:hover {
+  text-decoration: underline;
+}
+

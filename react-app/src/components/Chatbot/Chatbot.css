@@ -1,0 +1,118 @@
+.chatbot-container {
+  position: fixed;
+  bottom: 80px; /* Adjust if needed */
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.chatbot-header {
+  font-size: x-large;
+  background-color: #41de35;
+  display: flex;
+  color: #fff;
+  cursor: pointer;
+  position: sticky;
+  padding: 10px;
+  top: 0;
+  z-index: 1; /* Ensures the header stays on top of the messages */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chatbot-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto; /* Allows vertical scrolling */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - 60px); /* Adjust this value based on the header and input height */
+}
+
+.chatbot-input {
+  display: flex;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-top: 1px solid #ddd;
+  box-sizing: border-box;
+  width: 100%;
+  z-index: -1;
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.chatbot-input button {
+  padding: 10px;
+  margin-left: 10px;
+  background-color: #41de35;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.clear-button {
+  color: #fff;
+  font-size: x-large;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #41de35;
+}
+
+.collapsed {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.bot-image {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px; /* Adjust as needed for spacing */
+  border-radius: 50%;
+  object-fit: cover;
+  display: inline-block;
+}
+
+@keyframes loading {
+  0% {
+    content: '.';
+  }
+  33% {
+    content: '..';
+  }
+  66% {
+    content: '...';
+  }
+  100% {
+    content: '.';
+  }
+}
+
+.loading-dots::after {
+  display: inline-block;
+  content: '.';
+  animation: loading 1s infinite;
+}
+
+.hidden {
+  display: none;
+}

@@ -1,0 +1,13 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+
+# Ignore environment files
+.env
+*.env
+
+# Ignore virtual environment directories
+chatbot_env/
+chatbot_env/*
