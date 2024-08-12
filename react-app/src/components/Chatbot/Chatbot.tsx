@@ -12,6 +12,11 @@ const getDefaultGreetingMessage = (): Message => ({
   text: 'Hello! How can I assist you today?'
 });
 
+const getErrorMessage = (): Message => ({
+  sender: 'bot',
+  text: "I am currently facing some issues. I'll be back soon."
+});
+
 const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpen, onToggle }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -57,6 +62,11 @@ const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpen, 
         }
       } catch (error) {
         console.error('Error handling message:', error);
+        // Add fallback message
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          getErrorMessage(),
+        ]);
       } finally {
         setLoading(false); 
       }
