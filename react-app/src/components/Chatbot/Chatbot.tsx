@@ -39,17 +39,20 @@ const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpen, 
   
       try {
         // Send user message to the /chatbot/user endpoint
-        const userResponse = await fetch('http://127.0.0.1:5000/chatbot/user', {
+        const userId = "user123";
+        const userResponse = await fetch('http://127.0.0.1:8000/chatbot/user/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ text: input }),
+          body: JSON.stringify({ text: input , user_id: userId},
+
+          ),
         });
   
         if (userResponse.ok) {
           // Fetch bot's response from the /chatbot/bot endpoint
-          const botResponse = await fetch('http://127.0.0.1:5000/chatbot/bot');
+          const botResponse = await fetch(`http://127.0.0.1:8000/chatbot/bot/?user_id=${userId}`);
           if (botResponse.ok) {
             const data = await botResponse.json();
             const botMessage: Message = { sender: 'bot', text: data.response };
