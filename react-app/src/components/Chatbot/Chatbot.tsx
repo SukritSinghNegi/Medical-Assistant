@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Chatbot.css';
 import MessageCard from './MessageCard';
+import Cookies from 'js-cookie';
 
 interface Message {
   sender: 'user' | 'bot';
@@ -39,7 +40,8 @@ const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpen, 
   
       try {
         // Send user message to the /chatbot/user endpoint
-        const userId = "user123";
+        const userId = Cookies.get('sessionid');
+        console.log(userId)
         const userResponse = await fetch('http://127.0.0.1:8000/chatbot/user/', {
           method: 'POST',
           headers: {

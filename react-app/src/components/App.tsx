@@ -3,23 +3,19 @@ import ToggleButton from './Chatbot/ToggleButton';
 import Chatbot from './Chatbot/Chatbot';
 import SidebarMenu from './Pages/SidebarMenu';
 import './App.css';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'; // Import uuid
+import { setSessionIdCookie, getSessionIdCookie } from '../utils/cookies';
 
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if a userId already exists in localStorage
-    let storedUserId = localStorage.getItem('userId');
-    
-    // If no userId exists, generate a new one and store it
-    if (!storedUserId) {
-      storedUserId = uuidv4();
-      localStorage.setItem('userId', storedUserId);
+    const existingSessionId = getSessionIdCookie();
+    if (!existingSessionId) {
+      // Generate a new session ID (e.g., a random UUID)
+      const newSessionId = uuidv4(); // Replace with your own session ID generation logic
+      setSessionIdCookie(newSessionId);
     }
-    
-    setUserId(storedUserId);
   }, []);
 
   const handleToggle = () => {

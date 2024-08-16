@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 # Create your views here.
 # chatbot/views.py
 from django.http import JsonResponse
