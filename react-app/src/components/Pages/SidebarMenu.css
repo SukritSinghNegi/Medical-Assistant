@@ -62,4 +62,35 @@
     text-align: center; /* Center the content, if desired */
     z-index: 1000; /* Ensure it appears above other content */
   }
+
+
+  .sidebar-menu ul.dropdown-menu {
+    display: none;
+    list-style-type: none;
+    position: center;
+    text-align: center;
+    width: 100%;
+    padding-right: 20px;
+  }
+  
+  .sidebar-menu ul.dropdown-menu.open {
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding-right: 20px;
+  }
+  
+  .sidebar-menu .dropdown-toggle {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    position: fixed;
+    text-align: center;
+    font-style: Roboto;
+    font-size: x-large;
+    width: 100%;
+    padding: 10px;
+  }
+  
   

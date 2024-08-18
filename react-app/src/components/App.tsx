@@ -8,6 +8,7 @@ import { setSessionIdCookie, getSessionIdCookie } from '../utils/cookies';
 
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedChatbot, setSelectedChatbot] = useState<string>('Ecommerce-Chatbot'); // Default chatbot
 
   useEffect(() => {
     const existingSessionId = getSessionIdCookie();
@@ -22,10 +23,14 @@ const App: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleChatbotSelect = (chatbot: string) => {
+    setSelectedChatbot(chatbot); // Update the selected chatbot
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <SidebarMenu />
+        <SidebarMenu onChatbotSelect={handleChatbotSelect} />
         <nav className="App-nav">
           <ul>
             <li><a href="#about">About</a></li>
@@ -35,7 +40,7 @@ const App: React.FC = () => {
         </nav>
         
       </header>
-      <Chatbot isOpen={isOpen} onToggle={handleToggle} />
+      <Chatbot isOpen={isOpen} onToggle={handleToggle} chatbotName={selectedChatbot} />
       <ToggleButton isOpen={isOpen} onClick={handleToggle} />
     </div>
   );

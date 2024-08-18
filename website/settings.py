@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'chatbot',
     'corsheaders'
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -125,5 +126,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CRONJOBS = [
+    ('*/30 * * * *', 'django.core.management.call_command', 'chatbot.views.your_cron_function'),
+]
 
 CORS_ALLOW_ALL_ORIGINS = True 

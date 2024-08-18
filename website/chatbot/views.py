@@ -1,11 +1,12 @@
-from django.shortcuts import render
-# Create your views here.
 # chatbot/views.py
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from lib.retrieval_generation import generation
 from lib.data_injesion import ingestdata
+from datetime import datetime, timedelta
+
 
 vstore = ingestdata("done")
 chain = generation(vstore)
@@ -13,22 +14,31 @@ chain = generation(vstore)
 # Temporary storage for user messages
 user_sessions = {}
 
+def user_sessions_update() :
+    global user_sessions 
+    users = user_sessions.keys()
+    if len(users) != 0 :
+        for user in users :
+            if datetime.now() - user_sessions[user][list(user_sessions[user].keys())[0]] > timedelta(minutes=30):
+                del(user_sessions[user])  # Delete user sessions that are older than 30 minutes
+    return user_sessions
+
 @csrf_exempt
 def handle_user_message(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data)
         user_id = data.get('user_id')
         user_message = data.get('text')
-        print(f"Received : {user_id}")
-
+        active = bool(data.get('active'))
+        print(active)
         if user_id not in user_sessions:
-            user_sessions[user_id] = []
+            user_sessions[user_id] = {}
         # Store the user message
-        user_sessions[user_id].append(user_message)
-        print(f"User message received: {user_message}")
-
-        print(user_sessions)          
+        if active:
+            user_sessions[user_id][datetime]=user_message
+        else:
+            del(user_sessions[user_id])
+        print(user_sessions)
 
         return JsonResponse({'status': 'Message received'}, status=200)
 
@@ -40,7 +50,7 @@ def get_bot_response(request):
 
         if len(user_sessions[user_id]) > 1:
             # Get the latest user message
-            user_message = ", ".join(user_sessions[user_id][-3:])
+            user_message = ", ".join(list(user_sessions[user_id].values())[-3:])
         else:
             user_message = user_sessions[user_id][-1]
 
