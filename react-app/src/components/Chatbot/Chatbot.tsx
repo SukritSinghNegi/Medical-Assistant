@@ -11,8 +11,8 @@ interface Message {
 const handleSpeak = (speech: string) => {
   const msg = new SpeechSynthesisUtterance();
   msg.text = speech;
-  msg.rate = 0.75; // Speed of the speech (0.1 to 10)
-  msg.pitch = 2; // Pitch of the voice (0 to 2)
+  msg.rate = 0.75;
+  msg.pitch = 2;
   window.speechSynthesis.speak(msg);
 };
 
@@ -34,7 +34,6 @@ const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void; chatbotName: st
   const [activestate, setActivestate] = useState(true);
 
   useEffect(() => {
-    // Show default greeting message if messages are empty
     if (messages.length === 0){
       const greetingMessage = getDefaultGreetingMessage(chatbotName);
       setMessages([greetingMessage]);
@@ -49,25 +48,25 @@ const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void; chatbotName: st
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput('');
       setLoading(true);
-  
+
       try {
-        // Send user message to the /chatbot/user endpoint
         const userId = Cookies.get('sessionid');
-        console.log(userId , activestate,input);
+        console.log(userId, activestate, input);
+        
+        // Send user message with active state = true
         const userResponse = await fetch(`http://127.0.0.1:8000/${chatbotName}/user/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ text: input , user_id: userId, active: activestate }),
-
+          body: JSON.stringify({ text: input, user_id: userId, active: true }), // Set active to true when sending a message
         });
-  
+
         if (userResponse.ok) {
-          // Fetch bot's response from the /chatbot/bot endpoint
           const botResponse = await fetch(`http://127.0.0.1:8000/${chatbotName}/bot/?user_id=${userId}`);
           if (botResponse.ok) {
             const data = await botResponse.json();
+            setActivestate(data.active);
             const botMessage: Message = { sender: 'bot', text: data.response };
             setMessages((prevMessages) => [...prevMessages, botMessage]);
             handleSpeak(data.response);
@@ -79,36 +78,43 @@ const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void; chatbotName: st
         }
       } catch (error) {
         console.error('Error handling message:', error);
-        // Add fallback message
         setMessages((prevMessages) => [
           ...prevMessages,
           getErrorMessage(),
         ]);
-        handleSpeak(getErrorMessage().text)
+        handleSpeak(getErrorMessage().text);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     }
   };
-  
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSend();
-      setActivestate(true);
     }
   };
 
-  const handleClear = () => {
+  const handleClear = async () => {
+    const userId = Cookies.get('sessionid');
+    console.log("Clearing session for user:", userId);
+
+    // Clear session by setting active state to false
+    await fetch(`http://127.0.0.1:8000/${chatbotName}/user/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: '', user_id: userId, active: false }), // Set active to false to clear the session
+    });
+
     const greetingMessage = getDefaultGreetingMessage(chatbotName);
     setMessages([greetingMessage]);
     handleSpeak(greetingMessage.text);
-    setMessages([getDefaultGreetingMessage(chatbotName)]);
     setActivestate(false);
   };
 
   useEffect(() => {
-    // Clear messages when chatbotName changes
     handleClear();
   }, [chatbotName]);
 
@@ -129,7 +135,7 @@ const Chatbot: React.FC<{ isOpen: boolean; onToggle: () => void; chatbotName: st
           <MessageCard key={index} sender={msg.sender} text={msg.text} />
         ))}
         {loading && (
-          <div className="loading-dots"/>
+          <div className="loading-dots" />
         )}
         <div ref={messagesEndRef} />
       </div>
